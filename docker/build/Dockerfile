@@ -2,8 +2,7 @@
 # Copyright (c) 2014 Péter Szilágyi. All rights reserved.
 #
 # Released under the MIT license.
-ARG VERSION=latest
-FROM ${VERSION}-base
+FROM latest-base
 
 LABEL maintainer="techknowlogick <techknowlogick@gitea.io>"
 

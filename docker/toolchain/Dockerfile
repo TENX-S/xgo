@@ -11,11 +11,6 @@ LABEL maintainer="techknowlogick <techknowlogick@gitea.io>"
 ENV PATH   /usr/local/go/bin:$PATH
 ENV GOPATH /go
 
-# Inject the remote file fetcher and checksum verifier
-COPY fetch.sh /fetch.sh
-ENV FETCH /fetch.sh
-RUN chmod +x $FETCH
-
 # Make sure apt-get is up to date and dependent packages are installed
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # trunk-ignore(hadolint/DL3008)
@@ -23,6 +18,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update
 RUN apt-get install -y automake autogen
 RUN apt-get install -y build-essential ca-certificates
+RUN apt-get install -y g++-mingw-w64 clang
 RUN apt-get install -y gcc-5-arm-linux-gnueabi g++-5-arm-linux-gnueabi
 RUN apt-get install -y libc6-dev-armel-cross gcc-5-arm-linux-gnueabihf
 RUN apt-get install -y g++-5-arm-linux-gnueabihf libc6-dev-armhf-cross
@@ -35,7 +31,6 @@ RUN apt-get install -y g++-5-mips64-linux-gnuabi64 libc6-dev-mips64-cross
 RUN apt-get install -y gcc-5-mips64el-linux-gnuabi64 g++-5-mips64el-linux-gnuabi64
 RUN apt-get install -y libc6-dev-mips64el-cross gcc-5-multilib
 RUN apt-get install -y g++-5-multilib gcc-mingw-w64
-RUN apt-get install -y g++-mingw-w64 clang
 RUN apt-get install -y llvm-dev gcc-6-arm-linux-gnueabi
 RUN apt-get install -y g++-6-arm-linux-gnueabi libc6-dev-armel-cross
 RUN apt-get install -y gcc-6-arm-linux-gnueabihf g++-6-arm-linux-gnueabihf
@@ -79,6 +74,11 @@ RUN \
   # Fix git safe.directory
   git config --global --add safe.directory '*'
 
+# Inject the remote file fetcher and checksum verifier
+COPY fetch.sh /fetch.sh
+ENV FETCH /fetch.sh
+RUN chmod +x $FETCH
+
 # Add patches directory for patching later
 COPY patches /patches
 
@@ -95,9 +95,8 @@ ENV LD_LIBRARY_PATH=/osxcross/target/lib
 
 # Download the osx sdk and build the osx toolchain
 # We download the osx sdk, patch it and pack it again to be able to throw the patched version at osxcross
-RUN \
-  $FETCH $OSX_SDK_PATH 9b86eab03176c56bb526de30daa50fa819937c54b280364784ce431885341bf6 && \
-  tar -xf "$(basename $OSX_SDK_PATH)" && rm -f "$(basename $OSX_SDK_PATH)"
+RUN $FETCH $OSX_SDK_PATH 9b86eab03176c56bb526de30daa50fa819937c54b280364784ce431885341bf6
+RUN tar -xf "$(basename $OSX_SDK_PATH)" && rm -f "$(basename $OSX_SDK_PATH)"
 ADD patch.tar.xz $OSX_SDK/usr/include/c++
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # trunk-ignore(hadolint/DL3003)
