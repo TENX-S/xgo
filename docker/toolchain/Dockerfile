@@ -20,34 +20,58 @@ RUN chmod +x $FETCH
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # trunk-ignore(hadolint/DL3008)
 # trunk-ignore(hadolint/DL3015)
-RUN apt-get update && \
-  apt-get install -y automake autogen build-essential ca-certificates                    \
-    gcc-5-arm-linux-gnueabi g++-5-arm-linux-gnueabi libc6-dev-armel-cross                \
-    gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf libc6-dev-armhf-cross            \
-    gcc-5-aarch64-linux-gnu g++-5-aarch64-linux-gnu libc6-dev-arm64-cross                \
-    gcc-5-mips-linux-gnu g++-5-mips-linux-gnu libc6-dev-mips-cross                       \
-    gcc-5-mipsel-linux-gnu g++-5-mipsel-linux-gnu libc6-dev-mipsel-cross                 \
-    gcc-5-mips64-linux-gnuabi64 g++-5-mips64-linux-gnuabi64 libc6-dev-mips64-cross       \
-    gcc-5-mips64el-linux-gnuabi64 g++-5-mips64el-linux-gnuabi64 libc6-dev-mips64el-cross \
-    gcc-5-multilib g++-5-multilib gcc-mingw-w64 g++-mingw-w64 clang llvm-dev             \
-    gcc-6-arm-linux-gnueabi g++-6-arm-linux-gnueabi libc6-dev-armel-cross                \
-    gcc-6-arm-linux-gnueabihf g++-6-arm-linux-gnueabihf libc6-dev-armhf-cross            \
-    gcc-6-aarch64-linux-gnu g++-6-aarch64-linux-gnu libc6-dev-arm64-cross                \
-    gcc-6-mips-linux-gnu g++-6-mips-linux-gnu libc6-dev-mips-cross                       \
-    gcc-6-mipsel-linux-gnu g++-6-mipsel-linux-gnu libc6-dev-mipsel-cross                 \
-    gcc-6-mips64-linux-gnuabi64 g++-6-mips64-linux-gnuabi64 libc6-dev-mips64-cross       \
-    gcc-6-mips64el-linux-gnuabi64 g++-6-mips64el-linux-gnuabi64 libc6-dev-mips64el-cross \
-    gcc-6-s390x-linux-gnu g++-6-s390x-linux-gnu libc6-dev-s390x-cross \
-    gcc-6-powerpc64le-linux-gnu g++-6-powerpc64le-linux-gnu libc6-dev-powerpc-ppc64-cross \
-    gcc-8-riscv64-linux-gnu g++-8-riscv64-linux-gnu libc6-dev-riscv64-cross \
-    gcc-6-multilib g++-6-multilib gcc-7-multilib g++-7-multilib gcc-mingw-w64 g++-mingw-w64 \
-    clang llvm-dev libtool libxml2-dev uuid-dev libssl-dev swig openjdk-8-jdk pkg-config patch \
-    make xz-utils cpio wget zip unzip p7zip git mercurial bzr texinfo help2man cmake curl mercurial && \
-    apt-get install -y libssl1.1 openssl ca-certificates && \
-    update-ca-certificates && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-  find /var/log -type f | while read -r f; do echo -ne '' > "$f"; done;
+RUN apt-get update
+RUN apt-get install -y automake autogen
+RUN apt-get install -y build-essential ca-certificates
+RUN apt-get install -y gcc-5-arm-linux-gnueabi g++-5-arm-linux-gnueabi
+RUN apt-get install -y libc6-dev-armel-cross gcc-5-arm-linux-gnueabihf
+RUN apt-get install -y g++-5-arm-linux-gnueabihf libc6-dev-armhf-cross
+RUN apt-get install -y gcc-5-aarch64-linux-gnu g++-5-aarch64-linux-gnu
+RUN apt-get install -y libc6-dev-arm64-cross gcc-5-mips-linux-gnu
+RUN apt-get install -y g++-5-mips-linux-gnu libc6-dev-mips-cross
+RUN apt-get install -y gcc-5-mipsel-linux-gnu g++-5-mipsel-linux-gnu
+RUN apt-get install -y libc6-dev-mipsel-cross gcc-5-mips64-linux-gnuabi64
+RUN apt-get install -y g++-5-mips64-linux-gnuabi64 libc6-dev-mips64-cross
+RUN apt-get install -y gcc-5-mips64el-linux-gnuabi64 g++-5-mips64el-linux-gnuabi64
+RUN apt-get install -y libc6-dev-mips64el-cross gcc-5-multilib
+RUN apt-get install -y g++-5-multilib gcc-mingw-w64
+RUN apt-get install -y g++-mingw-w64 clang
+RUN apt-get install -y llvm-dev gcc-6-arm-linux-gnueabi
+RUN apt-get install -y g++-6-arm-linux-gnueabi libc6-dev-armel-cross
+RUN apt-get install -y gcc-6-arm-linux-gnueabihf g++-6-arm-linux-gnueabihf
+RUN apt-get install -y libc6-dev-armhf-cross gcc-6-aarch64-linux-gnu
+RUN apt-get install -y g++-6-aarch64-linux-gnu libc6-dev-arm64-cross
+RUN apt-get install -y gcc-6-mips-linux-gnu g++-6-mips-linux-gnu
+RUN apt-get install -y libc6-dev-mips-cross gcc-6-mipsel-linux-gnu
+RUN apt-get install -y g++-6-mipsel-linux-gnu libc6-dev-mipsel-cross
+RUN apt-get install -y gcc-6-mips64-linux-gnuabi64 g++-6-mips64-linux-gnuabi64
+RUN apt-get install -y libc6-dev-mips64-cross gcc-6-mips64el-linux-gnuabi64
+RUN apt-get install -y g++-6-mips64el-linux-gnuabi64 libc6-dev-mips64el-cross
+RUN apt-get install -y gcc-6-s390x-linux-gnu g++-6-s390x-linux-gnu
+RUN apt-get install -y libc6-dev-s390x-cross gcc-6-powerpc64le-linux-gnu
+RUN apt-get install -y g++-6-powerpc64le-linux-gnu libc6-dev-powerpc-ppc64-cross
+RUN apt-get install -y gcc-8-riscv64-linux-gnu g++-8-riscv64-linux-gnu
+RUN apt-get install -y libc6-dev-riscv64-cross gcc-6-multilib
+RUN apt-get install -y g++-6-multilib gcc-7-multilib
+RUN apt-get install -y g++-7-multilib gcc-mingw-w64
+RUN apt-get install -y g++-mingw-w64 clang
+RUN apt-get install -y llvm-dev libtool
+RUN apt-get install -y libxml2-dev uuid-dev
+RUN apt-get install -y libssl-dev swig
+RUN apt-get install -y openjdk-8-jdk pkg-config
+RUN apt-get install -y patch make
+RUN apt-get install -y xz-utils cpio
+RUN apt-get install -y wget zip
+RUN apt-get install -y unzip p7zip
+RUN apt-get install -y git mercurial
+RUN apt-get install -y bzr texinfo
+RUN apt-get install -y help2man cmake
+RUN apt-get install -y curl mercurial
+RUN apt-get install -y libssl1.1 openssl ca-certificates && \
+        update-ca-certificates && \
+      apt-get clean && \
+      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+      find /var/log -type f | while read -r f; do echo -ne '' > "$f"; done;
 
 RUN \
   # Fix any stock package issues
